@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <style>
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+    /* background: linear-gradient(to right, #FF6F61, #FFDAB9, #E6E6FA); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(5px);
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.profile-details {
+    margin-bottom: 30px;
+}
+
+.profile-details p {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.profile-details p strong {
+    color: #333;
+}
+
+.action-links {
+    text-align: center;
+}
+
+.action-links a {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 8px 20px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.action-links a:hover {
+    background-color: #0056b3;
+}
+a{
+    padding-right: 10px;
+}
+
+   </style>
+</head>
+<body style="background-image: url(/static/marc-schulte-KJCyvlA_aAQ-unsplash.jpg);">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: sandybrown;">
+          <a class="navbar-brand" href="#">Retina Vascular Segmentation</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+           <ul class="navbar-nav ml-auto">
+             <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+             <li class="nav-item"><a class="nav-link" href="about">About</a></li>
+             <li class="nav-item active"><a class="nav-link" href="profile">Profile</a></li>
+             <li class="nav-item"><a class="nav-link" href="logout">Logout</a></li>
+           </ul>
+          </div>
+        </nav>
+      </header>
+      <div class="container">
+        <h2>User Profile</h2>
+        <form method="post">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" value="{{ user.username }}" name="username" readonly>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" value="{{ user.email }}" name="email">
+            </div>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" value="{{ user.name }}" name="name">
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" class="form-control" id="phone_number" value="{{ user.phone_number }}" name="mobile">
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+    
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

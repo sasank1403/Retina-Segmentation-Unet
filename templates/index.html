@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            /* background: linear-gradient(to right, #FF6F61, #FFDAB9, #E6E6FA); */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(5px);
+            
+        }
+
+        h1 {
+            color: #1f4f99;
+        }
+
+        form {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 2px solid #1f4f99;
+            border-radius: 5px;
+            background-color: white;
+            color: #1f4f99;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #1f4f99;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .image-container img {
+            max-width: 78%;
+            border: 2px solid #1f4f99;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #1f4f99;
+        }
+
+        .avatar-upload {
+            position: relative;
+            max-width: 205px;
+            margin: 20px auto;
+        }
+
+        .avatar-edit {
+            position: absolute;
+            right: 12px;
+            z-index: 1;
+            top: 10px;
+        }
+
+        input[type='file'] {
+            display: none;
+        }
+
+        label[for="imageUpload"] {
+            display: inline-block;
+            width: 34px;
+            height: 34px;
+            margin-bottom: 0;
+            border-radius: 100%;
+            background: #FFFFFF;
+            border: 1px solid transparent;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            font-weight: normal;
+            transition: all .2s ease-in-out;
+        }
+
+        label[for="imageUpload"]:hover {
+            background: #f1f1f1;
+            border-color: #d6d6d6;
+        }
+
+        label[for="imageUpload"]:after {
+            content: "\f040";
+            font-family: 'FontAwesome';
+            color: #757575;
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            margin: auto;
+        }
+
+        .avatar-preview {
+            width: 220px;
+            height: 220px;
+            position: relative;
+            border-radius: 100%;
+            border: 6px solid #F8F8F8;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        #imagePreview {
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* Hide the form when images are present */
+        .hide-form {
+            display: none;
+        }
+        a{
+            padding-right: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body style="background-image: url('/static/marc-schulte-KJCyvlA_aAQ-unsplash.jpg');">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: sandybrown;">
+          <a class="navbar-brand" href="#">Retina Vascular Segmentation</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+           <ul class="navbar-nav ml-auto">
+             <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
+             <li class="nav-item"><a class="nav-link" href="about">About</a></li>
+             <li class="nav-item"><a class="nav-link" href="profile">Profile</a></li>
+             <li class="nav-item"><a class="nav-link" href="logout">Logout</a></li>
+           </ul>
+          </div>
+        </nav>
+      </header>
+    <form action="/" method="post" enctype="multipart/form-data" class="{{ 'hide-form' if uploaded_image or segmented_image }}">
+        <div class="avatar-upload">
+            <div class="avatar-edit">
+                <input type='file' id="imageUpload" name="file" accept=".png, .jpg, .jpeg" />
+                <label for="imageUpload"></label>
+            </div>
+            <div class="avatar-preview">
+                <div id="imagePreview" style="background-image: url(https://cdn.dribbble.com/users/1340032/screenshots/2964726/upload.gif);"></div>
+            </div><br>
+            <center><button type="submit">Upload</button></center>
+        </div>
+    </form>
+
+    <div class="image-container">
+        {% if uploaded_image %}
+            <div>
+                <h2>Uploaded Photo</h2>
+                <img src="{{ url_for('static', filename=uploaded_image) }}" alt="Uploaded Photo" id="uploadedImage" width="500px" height="400px">
+            </div>
+        {% endif %}
+
+        {% if segmented_image %}
+            <div style="position: relative; left: 10%;">
+                <h2>Result Image</h2>
+                <img src="{{ url_for('static', filename=segmented_image) }}" alt="Result Image" id="processedImage" >
+            </div>
+        {% endif %}
+       </div>
+    <div class="image-options">
+        <div class="slider-container">
+            <label for="rotationSlider" style="color: white;">Rotation:</label>
+            &emsp;<input type="range" id="rotationSlider" min="0" max="360" value="0" step="90" oninput="adjustRotation(this.value)">
+        </div>
+        <div class="slider-container">
+            <label for="brightnessSlider" style="color: white;">Brightness:</label>
+            <input type="range" id="brightnessSlider" min="0" max="800" value="0" step="10" oninput="adjustBrightness(this.value)">
+        </div>
+    
+        <div class="slider-container">
+            <label for="contrastSlider" style="color: white;">Contrast:</label>
+            &ensp;&nbsp; <input type="range" id="contrastSlider" min="100" max="1000" value="0" step="10" oninput="adjustContrast(this.value)">
+        </div>
+
+        <div class="slider-container">
+            <label for="saturationSlider" style="color: white;">Saturation:</label>
+            &nbsp;<input type="range" id="saturationSlider" min="0" max="100" value="0" step="10" oninput="adjustSaturation(this.value)">
+        </div>
+    </div><br><br><br>
+
+    <h2 style="color: white;">Key Components of Our Retinal Image Segmentation Pipeline</h2>
+        <ul style="color: white;">
+            <li><b>Model Architecture:</b> Utilizing CNN-based architectures like U-Net for precise segmentation of retinal structures.</li>
+            <li><b>Data Preprocessing:</b> Standardizing and augmenting retinal images to ensure consistent input for the segmentation model.</li>
+            <li><b>Training Process:</b> Optimizing model performance through iterative training on annotated datasets, focusing on minimizing segmentation loss and maximizing accuracy.</li>
+            <img src="{{ url_for('static', filename='train.jpeg') }}" width="400" height="300" style="padding:20px;"> 
+            <li><b>Evaluation Metrics:</b> Employing various metrics including Dice coefficient, IoU, and F1 score to quantitatively assess segmentation accuracy.</li>
+            <img src="{{ url_for('static', filename='validation.jpeg') }}" width="400" height="300" style="padding:20px;""> 
+            <li><b>Inference and Visualization:</b> Applying trained models to new retinal images and visualizing segmentation results to aid in interpretation and analysis.</li>
+        </ul>
+
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').style.backgroundImage = 'url(' + e.target.result + ')';
+                document.getElementById('imagePreview').style.display = 'none';
+                document.getElementById('imagePreview').style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.getElementById('imageUpload').addEventListener('change', function() {
+        readURL(this);
+    });
+        function adjustRotation(value) {
+            rotateElement(document.getElementById('uploadedImage'), value);
+            rotateElement(document.getElementById('processedImage'), value);
+        }
+    
+        function rotateElement(element, rotation) {
+            element.style.transform = 'rotate(' + rotation + 'deg)';
+        }
+    
+        function adjustBrightness(value) {
+            applyBrightness(document.getElementById('processedImage'), value);
+        }
+    
+        function adjustContrast(value) {
+            applyContrast(document.getElementById('uploadedImage'), value);
+            applyContrast(document.getElementById('processedImage'), value);
+        }
+    
+        function applyBrightness(imageElement, value) {
+            imageElement.style.filter = 'brightness(' + (100 + value) + '%)';
+        }
+    
+        function applyContrast(imageElement, value) {
+        imageElement.style.filter = 'contrast(' + value + '%)';
+        }
+         
+        function adjustSaturation(value) {
+            applySaturation(document.getElementById('uploadedImage'), value);
+            applySaturation(document.getElementById('processedImage'), value);
+        }
+
+        function applySaturation(imageElement, value) {
+            imageElement.style.filter = 'saturate(' + (100 + value) + '%)';
+        }
+        
+    </script>
+     
+</body>
+</html>
